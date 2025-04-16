@@ -5,6 +5,7 @@ import 'package:login/View/notes_screen.dart';
 import 'package:login/View/signup_screen.dart';
 import 'package:login/utils/const_value.dart';
 import 'package:login/utils/shared_preferences_helper.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -54,7 +55,7 @@ class _LoginScreenState extends State<LoginScreen> {
               controller: emailController,
               decoration: InputDecoration(
                   prefixIcon: Icon(Icons.email),
-                  label: Text("Email"),
+                  label: Text(AppLocalizations.of(context)!.email),
                   border: OutlineInputBorder(borderRadius: BorderRadius.circular(16))
               ),
             ),
@@ -68,7 +69,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     showPassword=!showPassword;
                     setState(() {});
                   }, icon: Icon(showPassword?Icons.visibility:Icons.visibility_off),),
-                  label: Text("Password"),
+                  label: Text(AppLocalizations.of(context)!.password),
                   border: OutlineInputBorder(borderRadius: BorderRadius.circular(16))
               ),
             ),
@@ -78,7 +79,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 Checkbox(value: rememberMe,
                     onChanged: (value){rememberMe=value!;setState(() {});},
                     ),
-                Text("Remember Me"),
+                Text(AppLocalizations.of(context)!.rememberMe),
               ],
             ),
             SizedBox(height: 20,),
@@ -104,19 +105,19 @@ class _LoginScreenState extends State<LoginScreen> {
              else{
                showDialog(context: context,
                    builder: (context){
-                     return AlertDialog(title: Text("Error"),content: Text("Invalid Email or Password"),actions: [
+                     return AlertDialog(title: Text(AppLocalizations.of(context)!.error),content: Text(AppLocalizations.of(context)!.emailOrPasswordIsIncorrect),actions: [
                        TextButton(onPressed: (){
                          Navigator.pop(context);
-                       }, child: Text("Ok"))
+                       }, child: Text(AppLocalizations.of(context)!.ok))
                      ],);
                    });
              }
              }
-             ,child: Text("LogIn")),
+             ,child: Text(AppLocalizations.of(context)!.login)),
             SizedBox(height: 20,),
             ElevatedButton(onPressed: (){
               Navigator.push(context, MaterialPageRoute(builder: (context)=>SignupScreen()));
-            }, child: Text("SignUp")),
+            }, child: Text(AppLocalizations.of(context)!.register)),
           ],
         ),
         )

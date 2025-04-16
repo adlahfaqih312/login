@@ -1,3 +1,4 @@
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 import '../Model/note_model.dart';
@@ -28,6 +29,7 @@ class DbController{
 
   Future<bool> login({required String email, required String password}) async{
     await openDataBaseFile();
+
     List<Map> res = await database.rawQuery(
       'SELECT * FROM Users WHERE Email = "$email" AND Password = "$password"',
     );
@@ -44,10 +46,11 @@ class DbController{
       //     value: res[0]["Email"]
       // );
 
-      SharedPreferencesHelper().savePrefString(
+      SharedPreferencesHelper().savePrefInt(
           key: ConstValue.id,
-          value: res[0]["id"].toString()
+          value: res[0]["id"]
       );
+
       await database.close();
       return true;
     }else{
@@ -69,7 +72,7 @@ class DbController{
     await openDataBaseFile();
     int userId= await SharedPreferencesHelper().getPrefInt(key: ConstValue.id, defaultValue: -1,);
     await database.rawInsert(
-    'INSERT INTO Note(msg, idUser) VALUES("$msg", "$userId")',
+    'INSERT INTO Note(msg, idUser) VALUES("$msg", $userId)',
     );
     await database.close();
   }
@@ -93,7 +96,7 @@ class DbController{
     int userId = await SharedPreferencesHelper().getPrefInt(
       key: ConstValue.id, defaultValue: -1,);
     List<Map> res = await database.rawQuery(
-      'SELECT * FROM Note WHERE idUser = "$userId"',
+      'SELECT * FROM Note WHERE idUser = $userId',
     );
     for(Map i in res){
       data.add(NoteModel(id: i["id"], msg: i["msg"], idUser: i["idUser"]));
